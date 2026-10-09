@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Attendance</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 40px;
+        }
+
+        .container {
+            width: 500px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #999;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student Attendance</h1>
+
+    <form th:action="@{/save}" th:object="${student}" method="post">
+
+        <label>Student ID</label>
+        <input type="text"
+               th:field="*{studentId}"
+               placeholder="Enter Student ID"
+               required>
+
+        <label>Number of Days Present</label>
+        <input type="number"
+               th:field="*{daysPresent}"
+               placeholder="Enter days present"
+               min="0"
+               required>
+
+        <button type="submit">Save Attendance</button>
+
+    </form>
+
+    <h2>Attendance Records</h2>
+
+    <table>
+
+        <tr>
+            <th>Student ID</th>
+            <th>Days Present</th>
+        </tr>
+
+        <tr th:each="student : ${students}">
+            <td th:text="${student.studentId}"></td>
+            <td th:text="${student.daysPresent}"></td>
+        </tr>
+
+    </table>
+
+</div>
+
+</body>
+</html>
