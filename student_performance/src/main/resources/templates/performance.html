@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Performance Analysis</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+        }
+
+        .box {
+            width: 650px;
+            margin: 50px auto;
+            border: 2px solid black;
+            padding: 30px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 2px solid black;
+            padding: 12px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>Student Performance Analysis</h2>
+
+    <p>
+        Reg.No:
+        <b th:text="${student.regNo}"></b>
+    </p>
+
+    <p>
+        Name:
+        <b th:text="${student.name}"></b>
+    </p>
+
+    <p>
+        Department:
+        <b th:text="${student.department}"></b>
+    </p>
+
+    <table>
+
+        <tr>
+            <th>Subject</th>
+            <th>Marks</th>
+        </tr>
+
+        <tr>
+            <td>Python</td>
+            <td th:text="${student.pythonMarks}"></td>
+        </tr>
+
+        <tr>
+            <td>SQL</td>
+            <td th:text="${student.sqlMarks}"></td>
+        </tr>
+
+        <tr>
+            <td>Java</td>
+            <td th:text="${student.javaMarks}"></td>
+        </tr>
+
+        <tr>
+            <th>Total</th>
+            <th th:text="${total}"></th>
+        </tr>
+
+        <tr>
+            <th>Average</th>
+            <th th:text="${average}"></th>
+        </tr>
+
+        <tr>
+            <th>Attendance</th>
+            <th th:text="${student.attendance + '%'}"></th>
+        </tr>
+
+    </table>
+
+    <br>
+
+    <a href="/record">Back to Record Details</a>
+
+</div>
+
+</body>
+</html>

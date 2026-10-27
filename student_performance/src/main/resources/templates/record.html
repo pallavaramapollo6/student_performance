@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Record Student Details</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+        }
+
+        .container {
+            width: 850px;
+            margin: 30px auto;
+            border: 2px solid black;
+            padding: 20px;
+        }
+
+        .menu {
+            float: left;
+            width: 150px;
+            border-right: 2px solid black;
+            min-height: 500px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 20px 10px;
+            border-bottom: 1px solid black;
+            text-decoration: none;
+            color: black;
+        }
+
+        .content {
+            margin-left: 180px;
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 400px;
+        }
+
+        th, td {
+            border: 2px solid black;
+            padding: 12px;
+            text-align: center;
+        }
+
+        input {
+            width: 100px;
+            padding: 6px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 8px 30px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="menu">
+
+        <a href="/record">Marks Details</a>
+
+        <a href="/record">Attendance Details</a>
+
+        <a href="/performance">Performance Analysis</a>
+
+    </div>
+
+    <div class="content">
+
+        <h2>Record Student Details</h2>
+
+        <p>
+            Reg.no:
+            <b th:text="${student.regNo}"></b>
+        </p>
+
+        <p>
+            <b th:text="${student.name}"></b>
+        </p>
+
+        <p>
+            <b th:text="${student.department}"></b>
+        </p>
+
+        <form action="/record" method="post">
+
+            <input type="hidden"
+                   name="regNo"
+                   th:value="${student.regNo}">
+
+            <table>
+
+                <tr>
+                    <th>Subjects</th>
+                    <th>Marks</th>
+                </tr>
+
+                <tr>
+                    <td>Python</td>
+                    <td>
+                        <input type="number"
+                               name="pythonMarks"
+                               min="0"
+                               max="100"
+                               th:value="${student.pythonMarks}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>SQL</td>
+                    <td>
+                        <input type="number"
+                               name="sqlMarks"
+                               min="0"
+                               max="100"
+                               th:value="${student.sqlMarks}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Java</td>
+                    <td>
+                        <input type="number"
+                               name="javaMarks"
+                               min="0"
+                               max="100"
+                               th:value="${student.javaMarks}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Attendance</td>
+                    <td>
+                        <input type="number"
+                               name="attendance"
+                               min="0"
+                               max="100"
+                               step="0.01"
+                               th:value="${student.attendance}">
+                    </td>
+                </tr>
+
+            </table>
+
+            <button type="submit">Save</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Student Sign Up</title>
+
+    <style>
+        body {
+            font-family: Arial;
+        }
+
+        .box {
+            width: 500px;
+            margin: 50px auto;
+            border: 2px solid black;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: inline-block;
+            width: 150px;
+            margin: 12px;
+        }
+
+        input {
+            padding: 8px;
+            width: 220px;
+        }
+
+        button {
+            margin-left: 180px;
+            padding: 8px 25px;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>Student Sign Up</h2>
+
+    <p class="error" th:text="${error}"></p>
+
+    <form action="/signup" method="post">
+
+        <label>Reg.No:</label>
+        <input type="text" name="regNo" required>
+        <br>
+
+        <label>Name:</label>
+        <input type="text" name="name" required>
+        <br>
+
+        <label>Department:</label>
+        <input type="text" name="department" required>
+        <br>
+
+        <label>Password:</label>
+        <input type="password" name="password" required>
+        <br>
+
+        <label>Confirm password:</label>
+        <input type="password" name="confirmPassword" required>
+        <br><br>
+
+        <button type="submit">Sign Up</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
