@@ -1,4 +1,3 @@
-
 package com.example.studentperformance.model;
 
 import jakarta.persistence.Entity;
@@ -16,16 +15,6 @@ public class Student {
     private String department;
     private String password;
 
-    private Integer pythonMarks;
-    private Integer sqlMarks;
-    private Integer javaMarks;
-
-    private Double attendance;
-
-    private String studentId;
-    private int daysPresent;
-
-    // Registration number
     public String getRegNo() {
         return regNo;
     }
@@ -34,7 +23,6 @@ public class Student {
         this.regNo = regNo;
     }
 
-    // Student name
     public String getName() {
         return name;
     }
@@ -43,7 +31,6 @@ public class Student {
         this.name = name;
     }
 
-    // Department
     public String getDepartment() {
         return department;
     }
@@ -52,7 +39,6 @@ public class Student {
         this.department = department;
     }
 
-    // Password
     public String getPassword() {
         return password;
     }
@@ -61,57 +47,28 @@ public class Student {
         this.password = password;
     }
 
-    // Python marks
-    public Integer getPythonMarks() {
-        return pythonMarks;
-    }
+	public int getPythonMarks() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-    public void setPythonMarks(Integer pythonMarks) {
-        this.pythonMarks = pythonMarks;
-    }
+	public void setPythonMarks1(Integer pythonMarks) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    // SQL marks
-    public Integer getSqlMarks() {
-        return sqlMarks;
-    }
+	public void setAttendance(Double attendance) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    public void setSqlMarks(Integer sqlMarks) {
-        this.sqlMarks = sqlMarks;
-    }
+	public void setPythonMarks11(Integer sqlMarks) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    // Java marks
-    public Integer getJavaMarks() {
-        return javaMarks;
-    }
-
-    public void setJavaMarks(Integer javaMarks) {
-        this.javaMarks = javaMarks;
-    }
-
-    // Attendance percentage
-    public Double getAttendance() {
-        return attendance;
-    }
-
-    public void setAttendance(Double attendance) {
-        this.attendance = attendance;
-    }
-
-    // Student ID
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
-
-    // Days present
-    public int getDaysPresent() {
-        return daysPresent;
-    }
-
-    public void setDaysPresent(int daysPresent) {
-        this.daysPresent = daysPresent;
-    }
+	public void setPythonMarks(Integer sqlMarks) {
+		// TODO Auto-generated method stub
+		
+	}
 }

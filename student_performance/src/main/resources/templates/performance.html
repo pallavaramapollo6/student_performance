@@ -1,40 +1,91 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Performance Analysis</title>
 
-    <style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <style>
         body {
-            font-family: Arial;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 20px;
         }
 
         .box {
-            width: 650px;
-            margin: 50px auto;
-            border: 2px solid black;
-            padding: 30px;
+            width: 90%;
+            max-width: 700px;
+            margin: 30px auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 25px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #243447;
         }
 
         table {
             border-collapse: collapse;
             width: 100%;
+            margin-top: 20px;
         }
 
         th, td {
-            border: 2px solid black;
+            border: 1px solid #777;
             padding: 12px;
             text-align: center;
         }
 
-        h2 {
+        th {
+            background: #e8eef5;
+        }
+
+        .analysis-box {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
             text-align: center;
         }
 
-    </style>
+        #status {
+            font-weight: bold;
+        }
 
+        #message {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            margin: 20px auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #075db5;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
@@ -59,49 +110,189 @@
     </p>
 
     <table>
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Marks</th>
+            </tr>
+        </thead>
 
-        <tr>
-            <th>Subject</th>
-            <th>Marks</th>
-        </tr>
+        <tbody>
+            <tr>
+                <td>Python</td>
+                <td th:text="${student.pythonMarks}"></td>
+            </tr>
 
-        <tr>
-            <td>Python</td>
-            <td th:text="${student.pythonMarks}"></td>
-        </tr>
+            <tr>
+                <td>SQL</td>
+                <td th:text="${student.sqlMarks}"></td>
+            </tr>
 
-        <tr>
-            <td>SQL</td>
-            <td th:text="${student.sqlMarks}"></td>
-        </tr>
+            <tr>
+                <td>Java</td>
+                <td th:text="${student.javaMarks}"></td>
+            </tr>
 
-        <tr>
-            <td>Java</td>
-            <td th:text="${student.javaMarks}"></td>
-        </tr>
+            <tr>
+                <th>Total</th>
+                <th th:text="${total}"></th>
+            </tr>
 
-        <tr>
-            <th>Total</th>
-            <th th:text="${total}"></th>
-        </tr>
+            <tr>
+                <th>Average</th>
+                <th th:text="${average}"></th>
+            </tr>
 
-        <tr>
-            <th>Average</th>
-            <th th:text="${average}"></th>
-        </tr>
-
-        <tr>
-            <th>Attendance</th>
-            <th th:text="${student.attendance + '%'}"></th>
-        </tr>
-
+            <tr>
+                <th>Attendance</th>
+                <th th:text="${student.attendance != null
+                    ? student.attendance + '%'
+                    : 'Not available'}"></th>
+            </tr>
+        </tbody>
     </table>
 
-    <br>
+    <!-- Performance Analysis -->
+    <div class="analysis-box">
 
-    <a href="/record">Back to Record Details</a>
+        <h2>Performance Analysis</h2>
+
+        <p>
+            Overall Average:
+            <b th:text="${average != null
+                ? #numbers.formatDecimal(average, 1, 2)
+                : 'Not available'}"></b>
+            / 100
+        </p>
+
+        <h3>
+            Result:
+            <span id="status">Calculating...</span>
+        </h3>
+
+        <p id="message"></p>
+
+        <div class="chart-container">
+            <canvas id="analysisChart"></canvas>
+        </div>
+
+    </div>
+
+    <a class="back-link" href="/record">
+        &larr; Back to Record Details
+    </a>
 
 </div>
+
+<script th:inline="javascript">
+    const python = /*[[${student.pythonMarks}]]*/ null;
+    const sql = /*[[${student.sqlMarks}]]*/ null;
+    const java = /*[[${student.javaMarks}]]*/ null;
+
+    const marks = [python, sql, java];
+
+    const statusElement = document.getElementById("status");
+    const messageElement = document.getElementById("message");
+
+    if (marks.some(mark =>
+        mark === null ||
+        mark === undefined ||
+        !Number.isFinite(Number(mark))
+    )) {
+        statusElement.textContent = "Not Available";
+        statusElement.style.color = "#666";
+        messageElement.textContent =
+            "Please enter marks for all subjects to view your analysis.";
+    } else {
+        const average =
+            marks.reduce((sum, mark) => sum + Number(mark), 0) / 3;
+
+        let status;
+        let message;
+        let color;
+
+        if (average >= 75) {
+            status = "GOOD";
+            message =
+                "Excellent performance! Keep up the good work.";
+            color = "#28a745";
+        } else if (average >= 50) {
+            status = "AVERAGE";
+            message =
+                "Good effort! Focus on improving your subject marks.";
+            color = "#e6a700";
+        } else {
+            status = "POOR";
+            message =
+                "More practice is needed. Follow a regular study schedule.";
+            color = "#dc3545";
+        }
+
+        statusElement.textContent = status;
+        statusElement.style.color = color;
+        messageElement.textContent = message;
+
+        new Chart(document.getElementById("analysisChart"), {
+            type: "bar",
+
+            data: {
+                labels: ["Good", "Average", "Poor"],
+
+                datasets: [{
+                    label: "Your Average Marks",
+                    data: [
+                        average >= 75 ? average : 0,
+                        average >= 50 && average < 75 ? average : 0,
+                        average < 50 ? average : 0
+                    ],
+
+                    backgroundColor: [
+                        "#28a745",
+                        "#ffc107",
+                        "#dc3545"
+                    ],
+
+                    borderWidth: 1
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+
+                        title: {
+                            display: true,
+                            text: "Average Marks"
+                        }
+                    },
+
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Performance Category"
+                        }
+                    }
+                },
+
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+
+                    title: {
+                        display: true,
+                        text: "Good / Average / Poor Analysis"
+                    }
+                }
+            }
+        });
+    }
+</script>
 
 </body>
 </html>

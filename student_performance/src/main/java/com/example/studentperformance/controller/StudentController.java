@@ -46,8 +46,8 @@ public class StudentController {
         if (student != null) {
 
             student.setPythonMarks(pythonMarks);
-            student.setSqlMarks(sqlMarks);
-            student.setJavaMarks(javaMarks);
+            student.setPythonMarks(sqlMarks);
+            student.setPythonMarks(javaMarks);
             student.setAttendance(attendance);
 
             studentRepository.save(student);
@@ -74,8 +74,8 @@ public class StudentController {
 
             int total =
                     student.getPythonMarks()
-                    + student.getSqlMarks()
-                    + student.getJavaMarks();
+                    + student.getPythonMarks()
+                    + student.getPythonMarks();
 
             double average = total / 3.0;
 
