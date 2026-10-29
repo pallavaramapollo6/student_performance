@@ -24,7 +24,7 @@ public class AuthController {
 
     // Signup
     @PostMapping("/signup")
-    public String signup(@RequestParam String regNo,
+    public String signup(@RequestParam Integer regNo,
                          @RequestParam String name,
                          @RequestParam String department,
                          @RequestParam String password,

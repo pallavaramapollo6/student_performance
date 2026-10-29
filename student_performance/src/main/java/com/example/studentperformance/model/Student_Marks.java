@@ -9,17 +9,17 @@ import jakarta.persistence.Table;
 public class Student_Marks {
 
     @Id
-    private String studentId;
+    private Integer studentId;
 
     private Integer pythonMarks;
     private Integer sqlMarks;
     private Integer javaMarks;
 
-    public String getStudentId() {
+    public Integer getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(String studentId) {
+    public void setStudentId(Integer studentId) {
         this.studentId = studentId;
     }
 

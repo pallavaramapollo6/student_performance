@@ -1,77 +1,103 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Student Login</title>
 
     <style>
         body {
-            font-family: Arial;
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
         }
 
         .box {
-            width: 450px;
+            width: 90%;
+            max-width: 400px;
             margin: 80px auto;
-            border: 2px solid black;
-            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 25px;
+            background: white;
+            box-sizing: border-box;
         }
 
         h2 {
             text-align: center;
+            color: #174a7e;
         }
 
         label {
-            display: inline-block;
-            width: 120px;
-            margin: 15px;
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 6px;
         }
 
         input {
-            padding: 8px;
-            width: 200px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         button {
             display: block;
-            margin: 25px auto;
-            padding: 10px 35px;
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            background: #174a7e;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
 
         .error {
             color: red;
             text-align: center;
         }
+
+        .success {
+            color: green;
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-
 <div class="box">
 
-    <h2>Add and Manage Student Details</h2>
+    <h2>Student Login</h2>
 
-    <p class="error" th:text="${error}"></p>
+    <p class="error" th:if="${error}"
+       th:text="${error}"></p>
 
-    <form action="/login" method="post">
+    <p class="success" th:if="${success}"
+       th:text="${success}"></p>
 
-        <label>Reg.No:</label>
-        <input type="text" name="regNo" required>
-        <br>
+    <form th:action="@{/login}" method="post">
 
-        <label>Password:</label>
-        <input type="password" name="password" required>
-        <br>
+        <label for="regNo">Registration Number</label>
+        <input id="regNo" type="text" name="regNo"
+               placeholder="Enter registration number"
+               required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password"
+               placeholder="Enter password"
+               required>
 
         <button type="submit">Login</button>
-
     </form>
 
-    <p style="text-align:center;">
+    <p>
         New student?
-        <a href="/signup">Sign Up</a>
+        <a th:href="@{/signup}">Sign Up</a>
     </p>
 
 </div>
-
 </body>
 </html>
