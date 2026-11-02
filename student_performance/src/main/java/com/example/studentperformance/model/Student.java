@@ -9,17 +9,17 @@ import jakarta.persistence.Table;
 public class Student {
 
     @Id
-    private String regNo;
+    private Integer regNo;
 
     private String name;
     private String department;
     private String password;
 
-    public String getRegNo() {
+    public Integer getRegNo() {
         return regNo;
     }
 
-    public void setRegNo(String regNo) {
+    public void setRegNo(Integer regNo) {
         this.regNo = regNo;
     }
 

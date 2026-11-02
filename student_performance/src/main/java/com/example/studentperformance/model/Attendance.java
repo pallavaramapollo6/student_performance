@@ -9,16 +9,16 @@ import jakarta.persistence.Table;
 public class Attendance {
 
     @Id
-    private String studentId;
+    private Integer studentId;
 
     private Double attendance;
-    private int daysPresent;
+    private Integer daysPresent;
 
-    public String getStudentId() {
+    public int getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(String studentId) {
+    public void setStudentId(Integer studentId) {
         this.studentId = studentId;
     }
 
@@ -30,11 +30,11 @@ public class Attendance {
         this.attendance = attendance;
     }
 
-    public int getDaysPresent() {
+    public Integer getDaysPresent() {
         return daysPresent;
     }
 
-    public void setDaysPresent(int daysPresent) {
+    public void setDaysPresent(Integer daysPresent) {
         this.daysPresent = daysPresent;
     }
 }

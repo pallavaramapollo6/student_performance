@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Student Attendance</title>
 
     <style>
@@ -13,7 +15,7 @@
         }
 
         .container {
-            width: 500px;
+            max-width: 550px;
             margin: auto;
             background: white;
             padding: 30px;
@@ -21,7 +23,7 @@
             box-shadow: 0 0 10px #999;
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
         }
 
@@ -64,51 +66,74 @@
             background-color: #333;
             color: white;
         }
+
+        .message {
+            padding: 10px;
+            margin-top: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-
 <div class="container">
 
     <h1>Student Attendance</h1>
 
-    <form th:action="@{/save}" th:object="${student}" method="post">
+    <p class="message"
+       th:if="${success != null}"
+       th:text="${success}"></p>
 
-        <label>Student ID</label>
+    <p class="message"
+       th:if="${error != null}"
+       th:text="${error}"></p>
+
+    <form th:action="@{/attendance/save}"
+          th:object="${marks}"
+          method="post">
+
+        <label for="studentId">Student Registration Number</label>
         <input type="text"
+               id="studentId"
                th:field="*{studentId}"
-               placeholder="Enter Student ID"
+               placeholder="Enter registration number"
                required>
 
-        <label>Number of Days Present</label>
+        <label for="attendance">Attendance Percentage (%)</label>
         <input type="number"
-               th:field="*{daysPresent}"
-               placeholder="Enter days present"
+               id="attendance"
+               th:field="*{attendance}"
+               placeholder="Enter attendance percentage"
                min="0"
+               max="100"
+               step="0.01"
                required>
 
         <button type="submit">Save Attendance</button>
-
     </form>
 
     <h2>Attendance Records</h2>
 
     <table>
-
+        <thead>
         <tr>
             <th>Student ID</th>
-            <th>Days Present</th>
+            <th>Attendance (%)</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="record : ${records}">
+            <td th:text="${record.studentId}"></td>
+            <td th:text="${record.attendance}"></td>
         </tr>
 
-        <tr th:each="student : ${students}">
-            <td th:text="${student.studentId}"></td>
-            <td th:text="${student.daysPresent}"></td>
+        <tr th:if="${#lists.isEmpty(records)}">
+            <td colspan="2">No attendance records found.</td>
         </tr>
-
+        </tbody>
     </table>
 
 </div>
-
 </body>
 </html>

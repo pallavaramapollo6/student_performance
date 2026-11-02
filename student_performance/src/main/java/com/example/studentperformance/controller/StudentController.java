@@ -20,7 +20,7 @@ public class StudentController {
     @GetMapping("/record")
     public String recordPage(HttpSession session, Model model) {
 
-        String regNo = (String) session.getAttribute("regNo");
+        Integer regNo = (Integer) session.getAttribute("regNo");
 
         if (regNo == null) {
             return "redirect:/";
@@ -35,7 +35,7 @@ public class StudentController {
 
     // Save marks and attendance
     @PostMapping("/record")
-    public String saveRecord(@RequestParam String regNo,
+    public String saveRecord(@RequestParam Integer regNo,
                              @RequestParam Integer pythonMarks,
                              @RequestParam Integer sqlMarks,
                              @RequestParam Integer javaMarks,
@@ -60,7 +60,7 @@ public class StudentController {
     @GetMapping("/performance")
     public String performance(HttpSession session, Model model) {
 
-        String regNo = (String) session.getAttribute("regNo");
+        Integer regNo = (Integer) session.getAttribute("regNo");
 
         if (regNo == null) {
             return "redirect:/";

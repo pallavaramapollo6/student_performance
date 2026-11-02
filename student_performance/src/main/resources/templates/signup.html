@@ -2,82 +2,148 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Sign Up</title>
 
     <style>
         body {
-            font-family: Arial;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
         }
 
         .box {
             width: 500px;
+            max-width: 85%;
             margin: 50px auto;
             border: 2px solid black;
             padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-sizing: border-box;
         }
 
         h2 {
             text-align: center;
+            margin-bottom: 25px;
         }
 
         label {
-            display: inline-block;
-            width: 150px;
-            margin: 12px;
+            display: block;
+            margin: 12px 0 6px;
+            font-weight: bold;
         }
 
         input {
-            padding: 8px;
-            width: 220px;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            border: 1px solid #999;
+            border-radius: 4px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007bff;
         }
 
         button {
-            margin-left: 180px;
-            padding: 8px 25px;
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 30px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
 
         .error {
             color: red;
             text-align: center;
         }
+
+        .success {
+            color: green;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .box {
+                margin: 25px auto;
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-<div class="box">
+    <div class="box">
 
-    <h2>Student Sign Up</h2>
+        <h2>Student Sign Up</h2>
 
-    <p class="error" th:text="${error}"></p>
+        <p class="error"
+           th:if="${error != null}"
+           th:text="${error}">
+        </p>
 
-    <form action="/signup" method="post">
+        <p class="success"
+           th:if="${success != null}"
+           th:text="${success}">
+        </p>
 
-        <label>Reg.No:</label>
-        <input type="text" name="regNo" required>
-        <br>
+        <form th:action="@{/signup}" method="post">
 
-        <label>Name:</label>
-        <input type="text" name="name" required>
-        <br>
+            <label for="regNo">Register Number:</label>
+            <input type="text"
+                   id="regNo"
+                   name="regNo"
+                   placeholder="Enter register number"
+                   required>
 
-        <label>Department:</label>
-        <input type="text" name="department" required>
-        <br>
+            <label for="name">Name:</label>
+            <input type="text"
+                   id="name"
+                   name="name"
+                   placeholder="Enter your name"
+                   required>
 
-        <label>Password:</label>
-        <input type="password" name="password" required>
-        <br>
+            <label for="department">Department:</label>
+            <input type="text"
+                   id="department"
+                   name="department"
+                   placeholder="Enter your department"
+                   required>
 
-        <label>Confirm password:</label>
-        <input type="password" name="confirmPassword" required>
-        <br><br>
+            <label for="password">Password:</label>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   placeholder="Create a password"
+                   required>
 
-        <button type="submit">Sign Up</button>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password"
+                   id="confirmPassword"
+                   name="confirmPassword"
+                   placeholder="Confirm your password"
+                   required>
 
-    </form>
+            <button type="submit">Sign Up</button>
 
-</div>
+        </form>
+
+    </div>
 
 </body>
 </html>
