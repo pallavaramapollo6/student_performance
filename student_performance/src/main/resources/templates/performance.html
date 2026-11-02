@@ -3,313 +3,627 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performance Analysis</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Student Performance Analysis</title>
 
     <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background: #f4f6f9;
+            background: #f3f5f9;
             margin: 0;
-            padding: 20px;
+            color: #222;
         }
 
-        .box {
-            width: 90%;
-            max-width: 700px;
-            margin: 30px auto;
+        .header {
+            background: #173b68;
+            color: white;
+            padding: 22px 35px;
+        }
+
+        .header h2 {
+            margin: 0 0 10px;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 210px;
+            background: #eaf0f8;
+            flex-shrink: 0;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 18px;
+            color: #173b68;
+            text-decoration: none;
+            border-bottom: 1px solid #d5dce7;
+        }
+
+        .sidebar a:hover {
+            background: #d7e3f3;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 30px;
+        }
+
+        .student-details {
+            background: #f5f7fb;
+            border: 1px solid #dce2ec;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .student-details p {
+            margin: 12px 0;
+        }
+
+        .top-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .card {
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 25px;
-            box-sizing: border-box;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            color: #243447;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #777;
-            padding: 12px;
-            text-align: center;
-        }
-
-        th {
-            background: #e8eef5;
-        }
-
-        .analysis-box {
-            margin-top: 30px;
-            padding: 20px;
             border: 1px solid #ccc;
             border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 22px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #173b68;
+            border-bottom: 2px solid #dce2ec;
+            padding-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #c8cfda;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #173b68;
+            color: white;
+            border: none;
+            padding: 11px 22px;
+            margin-top: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #24558e;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details-table th,
+        .details-table td {
+            border: 1px solid #d5dce7;
+            padding: 13px;
             text-align: center;
         }
 
-        #status {
+        .details-table th {
+            background: #eaf0f8;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 5px;
             font-weight: bold;
         }
 
-        #message {
-            font-size: 16px;
-            line-height: 1.5;
+        .good {
+            background: #d4edda;
+            color: #155724;
         }
 
-        .chart-container {
-            position: relative;
+        .average {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .poor {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .not-available {
+            background: #eeeeee;
+            color: #555;
+        }
+
+        .chart-row {
+            margin: 22px 0;
+        }
+
+        .chart-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .progress {
             width: 100%;
-            height: 300px;
-            margin: 20px auto;
+            height: 24px;
+            background: #eeeeee;
+            border-radius: 5px;
+            overflow: hidden;
         }
 
-        .back-link {
-            display: inline-block;
+        .bar {
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .bar.good {
+            background: #28a745;
+        }
+
+        .bar.average {
+            background: #ffc107;
+        }
+
+        .bar.poor {
+            background: #dc3545;
+        }
+
+        .summary {
+            background: #f5f7fb;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
             margin-top: 20px;
-            color: #075db5;
-            text-decoration: none;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
+        .message {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
         }
 
         .error {
-            color: #dc3545;
-            text-align: center;
+            background: #f8d7da;
+            color: #721c24;
         }
+
+        @media(max-width: 850px) {
+
+            .top-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .main {
+                padding: 15px;
+            }
+        }
+
     </style>
+
 </head>
 
 <body>
 
-<div class="box">
+    <!-- HEADER -->
 
-    <h2>Student Performance Analysis</h2>
+    <div class="header">
 
-    <p class="error" th:if="${error}" th:text="${error}"></p>
+        <h2>Student Performance Management</h2>
 
-    <div th:if="${student != null}">
+        <p>Student Performance Analysis</p>
 
-        <p>
-            Reg.No:
-            <b th:text="${student.regNo}"></b>
-        </p>
+    </div>
 
-        <p>
-            Name:
-            <b th:text="${student.name}"></b>
-        </p>
 
-        <p>
-            Department:
-            <b th:text="${student.department}"></b>
-        </p>
+    <div class="layout">
 
-        <table>
-            <thead>
-            <tr>
-                <th>Subject</th>
-                <th>Marks</th>
-            </tr>
-            </thead>
+        <!-- SIDEBAR -->
 
-            <tbody>
-            <tr>
-                <td>Python</td>
-                <td th:text="${python != null ? python : 'Not entered'}"></td>
-            </tr>
+        <nav class="sidebar">
 
-            <tr>
-                <td>SQL</td>
-                <td th:text="${sql != null ? sql : 'Not entered'}"></td>
-            </tr>
+            <a th:href="@{/record}">
+                Student Record
+            </a>
 
-            <tr>
-                <td>Java</td>
-                <td th:text="${java != null ? java : 'Not entered'}"></td>
-            </tr>
+            <a th:href="@{/performance}">
+                Performance Analysis
+            </a>
 
-            <tr>
-                <th>Total</th>
-                <th th:text="${total != null ? total : 'Not available'}"></th>
-            </tr>
+        </nav>
 
-            <tr>
-                <th>Average</th>
-                <th th:text="${average != null
-                    ? #numbers.formatDecimal(average, 1, 2)
-                    : 'Not available'}"></th>
-            </tr>
 
-            <tr>
-                <th>Attendance</th>
-                <th th:text="${attendance != null
-                    ? attendance + '%'
-                    : 'Not available'}"></th>
-            </tr>
-            </tbody>
-        </table>
+        <!-- MAIN CONTENT -->
 
-        <div class="analysis-box">
+        <main class="main">
 
             <h2>Performance Analysis</h2>
 
-            <p>
-                Overall Average:
-                <b th:text="${average != null
-                    ? #numbers.formatDecimal(average, 1, 2)
-                    : 'Not available'}"></b>
-                / 100
-            </p>
 
-            <h3>
-                Result:
-                <span id="status">Calculating...</span>
-            </h3>
+            <!-- STUDENT DETAILS -->
 
-            <p id="message"></p>
+            <div class="student-details"
+                 th:if="${student != null}">
 
-            <div class="chart-container">
-                <canvas id="analysisChart"></canvas>
+                <p>
+                    Student ID :
+                    <b th:text="${student.regNo}"></b>
+                </p>
+
+                <p>
+                    Name :
+                    <b th:text="${student.name}"></b>
+                </p>
+
+                <p>
+                    Department :
+                    <b th:text="${student.department}"></b>
+                </p>
+
             </div>
 
-        </div>
 
-        <a class="back-link" href="/record"
-           th:href="@{/record(regNo=${student.regNo})}">
-            &larr; Back to Record Details
-        </a>
+            <!-- SUCCESS AND ERROR MESSAGES -->
+
+            <div class="message success"
+                 th:if="${attendanceSuccess != null}"
+                 th:text="${attendanceSuccess}">
+            </div>
+
+            <div class="message error"
+                 th:if="${attendanceError != null}"
+                 th:text="${attendanceError}">
+            </div>
+
+
+            <!-- MAIN GRID -->
+
+            <div class="top-grid">
+
+
+                <!-- ATTENDANCE FORM -->
+
+                <div class="card">
+
+                    <h3>Student Attendance</h3>
+
+                    <form th:action="@{/attendance}"
+                          method="post">
+
+                        <label>Days Present</label>
+
+                        <input type="number"
+                               name="daysPresent"
+                               min="0"
+                               required
+                               placeholder="Enter days present"
+                               th:value="${attendance != null ? attendance.daysPresent : ''}">
+
+                        <label>Total Days</label>
+
+                        <input type="number"
+                               name="totalDays"
+                               min="1"
+                               required
+                               placeholder="Enter total days"
+                               th:value="${attendance != null ? attendance.totalDays : ''}">
+
+                        <button type="submit">
+                            Submit Attendance
+                        </button>
+
+                    </form>
+
+                    <p th:if="${attendance != null}">
+                        Attendance:
+                        <b th:text="${#numbers.formatDecimal(attendance.attendance, 1, 2) + '%'}"></b>
+                    </p>
+
+                </div>
+
+
+                <!-- PERFORMANCE DETAILS -->
+
+                <div class="card">
+
+                    <h3>Performance Details</h3>
+
+                    <div th:if="${marksAvailable == true}">
+
+                        <p>
+                            Total :
+                            <b th:text="${total}"></b>
+                            / 300
+                        </p>
+
+                        <p>
+                            Percentage :
+                            <b th:text="${#numbers.formatDecimal(percentage, 1, 2) + '%'}"></b>
+                        </p>
+
+                        <p>
+                            Average :
+                            <b th:text="${#numbers.formatDecimal(average, 1, 2)}"></b>
+                        </p>
+
+                    </div>
+
+                    <p th:if="${marksAvailable == false}">
+                        Marks are not available.
+                        Please save all three subject marks.
+                    </p>
+
+                </div>
+
+
+                <!-- PERFORMANCE RESULT -->
+
+                <div class="card">
+
+                    <h3>Result</h3>
+
+                    <div th:if="${marksAvailable == true}">
+
+                        <p>
+                            Overall Performance:
+                        </p>
+
+                        <span class="status"
+                              th:classappend="${overallResult == 'Good' ? 'good' :
+                              (overallResult == 'Average' ? 'average' : 'poor')}"
+                              th:text="${overallResult}">
+                        </span>
+
+                        <hr>
+
+                        <p>Good: <span class="status good">Green</span></p>
+
+                        <p>Average: <span class="status average">Yellow</span></p>
+
+                        <p>Poor: <span class="status poor">Red</span></p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUBJECT PERFORMANCE TABLE -->
+
+            <div class="card">
+
+                <h3>Subject Performance Details</h3>
+
+                <div th:if="${marksAvailable == true}">
+
+                    <table class="details-table">
+
+                        <tr>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th>Performance</th>
+                        </tr>
+
+                        <tr>
+                            <td>Python</td>
+
+                            <td th:text="${marks.pythonMarks}"></td>
+
+                            <td>
+                                <span class="status"
+                                      th:classappend="${pythonResult == 'Good' ? 'good' :
+                                      (pythonResult == 'Average' ? 'average' : 'poor')}"
+                                      th:text="${pythonResult}">
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Java</td>
+
+                            <td th:text="${marks.javaMarks}"></td>
+
+                            <td>
+                                <span class="status"
+                                      th:classappend="${javaResult == 'Good' ? 'good' :
+                                      (javaResult == 'Average' ? 'average' : 'poor')}"
+                                      th:text="${javaResult}">
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>SQL</td>
+
+                            <td th:text="${marks.sqlMarks}"></td>
+
+                            <td>
+                                <span class="status"
+                                      th:classappend="${sqlResult == 'Good' ? 'good' :
+                                      (sqlResult == 'Average' ? 'average' : 'poor')}"
+                                      th:text="${sqlResult}">
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Attendance</td>
+
+                            <td th:text="${attendance != null ?
+                                attendance.attendance + '%' : 'Not available'}">
+                            </td>
+
+                            <td>
+                                <span class="status"
+                                      th:if="${attendance != null}"
+                                      th:classappend="${attendanceResult == 'Good' ? 'good' :
+                                      (attendanceResult == 'Average' ? 'average' : 'poor')}"
+                                      th:text="${attendanceResult}">
+                                </span>
+
+                                <span th:if="${attendance == null}">
+                                    Not available
+                                </span>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- PERFORMANCE GRAPH -->
+
+            <div class="card">
+
+                <h3>Performance Graph</h3>
+
+                <div th:if="${marksAvailable == true}">
+
+                    <!-- PYTHON -->
+
+                    <div class="chart-row">
+
+                        <div class="chart-label">
+                            <span>Python</span>
+                            <span th:text="${marks.pythonMarks + '%'}"></span>
+                        </div>
+
+                        <div class="progress">
+
+                            <div class="bar"
+                                 th:classappend="${pythonResult == 'Good' ? 'good' :
+                                 (pythonResult == 'Average' ? 'average' : 'poor')}"
+                                 th:style="|width: ${marks.pythonMarks}%;|">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- JAVA -->
+
+                    <div class="chart-row">
+
+                        <div class="chart-label">
+                            <span>Java</span>
+                            <span th:text="${marks.javaMarks + '%'}"></span>
+                        </div>
+
+                        <div class="progress">
+
+                            <div class="bar"
+                                 th:classappend="${javaResult == 'Good' ? 'good' :
+                                 (javaResult == 'Average' ? 'average' : 'poor')}"
+                                 th:style="|width: ${marks.javaMarks}%;|">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SQL -->
+
+                    <div class="chart-row">
+
+                        <div class="chart-label">
+                            <span>SQL</span>
+                            <span th:text="${marks.sqlMarks + '%'}"></span>
+                        </div>
+
+                        <div class="progress">
+
+                            <div class="bar"
+                                 th:classappend="${sqlResult == 'Good' ? 'good' :
+                                 (sqlResult == 'Average' ? 'average' : 'poor')}"
+                                 th:style="|width: ${marks.sqlMarks}%;|">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <p th:if="${marksAvailable == false}">
+                    Save all subject marks to view the graph.
+                </p>
+
+            </div>
+
+
+            <!-- OVERALL SUMMARY -->
+
+            <div class="summary"
+                 th:if="${marksAvailable == true}">
+
+                <h2>Overall Performance</h2>
+
+                <h1 th:text="${#numbers.formatDecimal(percentage, 1, 2) + '%'}">
+                </h1>
+
+                <span class="status"
+                      th:classappend="${overallResult == 'Good' ? 'good' :
+                      (overallResult == 'Average' ? 'average' : 'poor')}"
+                      th:text="${overallResult}">
+                </span>
+
+            </div>
+
+
+        </main>
 
     </div>
-</div>
-
-<script th:inline="javascript">
-    const python = /*[[${python}]]*/ null;
-    const sql = /*[[${sql}]]*/ null;
-    const java = /*[[${java}]]*/ null;
-
-    const marks = [python, sql, java];
-
-    const statusElement = document.getElementById("status");
-    const messageElement = document.getElementById("message");
-
-    const allMarksEntered = marks.every(mark =>
-        mark !== null &&
-        mark !== undefined &&
-        Number.isFinite(Number(mark))
-    );
-
-    if (statusElement && messageElement) {
-
-        if (!allMarksEntered) {
-            statusElement.textContent = "Not Available";
-            statusElement.style.color = "#666";
-
-            messageElement.textContent =
-                "Please save marks for all three subjects to view your analysis.";
-
-        } else {
-            const average = marks.reduce(
-                (sum, mark) => sum + Number(mark), 0
-            ) / marks.length;
-
-            let status;
-            let message;
-            let color;
-
-            if (average >= 75) {
-                status = "GOOD";
-                message =
-                    "Excellent performance! Keep up the good work.";
-                color = "#28a745";
-            } else if (average >= 50) {
-                status = "AVERAGE";
-                message =
-                    "Good effort! Focus on improving your subject marks.";
-                color = "#e6a700";
-            } else {
-                status = "POOR";
-                message =
-                    "More practice is needed. Follow a regular study schedule.";
-                color = "#dc3545";
-            }
-
-            statusElement.textContent = status;
-            statusElement.style.color = color;
-            messageElement.textContent = message;
-
-            const canvas = document.getElementById("analysisChart");
-
-            new Chart(canvas, {
-                type: "bar",
-
-                data: {
-                    labels: ["Python", "SQL", "Java"],
-
-                    datasets: [{
-                        label: "Subject Marks",
-                        data: marks.map(Number),
-
-                        backgroundColor: [
-                            "#4285f4",
-                            "#28a745",
-                            "#ffc107"
-                        ],
-
-                        borderWidth: 1
-                    }]
-                },
-
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-
-                            title: {
-                                display: true,
-                                text: "Marks out of 100"
-                            }
-                        },
-
-                        x: {
-                            title: {
-                                display: true,
-                                text: "Subjects"
-                            }
-                        }
-                    },
-
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-
-                        title: {
-                            display: true,
-                            text: "Subject-wise Performance"
-                        }
-                    }
-                }
-            });
-        }
-    }
-</script>
 
 </body>
+
 </html>

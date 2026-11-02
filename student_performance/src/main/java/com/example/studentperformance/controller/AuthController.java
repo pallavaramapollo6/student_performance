@@ -50,7 +50,7 @@ public class AuthController {
 
         studentRepository.save(student);
 
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     // Login page

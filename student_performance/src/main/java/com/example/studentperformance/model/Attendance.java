@@ -11,23 +11,18 @@ public class Attendance {
     @Id
     private Integer studentId;
 
-    private Double attendance;
     private Integer daysPresent;
 
-    public int getStudentId() {
+    private Integer totalDays;
+
+    private Double attendance;
+
+    public Integer getStudentId() {
         return studentId;
     }
 
     public void setStudentId(Integer studentId) {
         this.studentId = studentId;
-    }
-
-    public Double getAttendance() {
-        return attendance;
-    }
-
-    public void setAttendance(Double attendance) {
-        this.attendance = attendance;
     }
 
     public Integer getDaysPresent() {
@@ -36,5 +31,21 @@ public class Attendance {
 
     public void setDaysPresent(Integer daysPresent) {
         this.daysPresent = daysPresent;
+    }
+
+    public Integer getTotalDays() {
+        return totalDays;
+    }
+
+    public void setTotalDays(Integer totalDays) {
+        this.totalDays = totalDays;
+    }
+
+    public Double getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(Double attendance) {
+        this.attendance = attendance;
     }
 }
